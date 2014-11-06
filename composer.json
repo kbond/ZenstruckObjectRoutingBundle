@@ -1,0 +1,28 @@
+{
+    "name": "zenstruck/object-routing-bundle",
+    "description": "Symfony2 Bundle that allows generating urls from objects.",
+    "keywords": ["routing", "symfony2", "bundle"],
+    "homepage": "http://zenstruck.com/projects/ZenstruckObjectRoutingBundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Bond",
+            "email": "kevinbond@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/http-kernel": "~2.3",
+        "symfony/routing": "~2.3",
+        "symfony/property-access": "~2.3",
+        "symfony/dependency-injection": "~2.3",
+        "symfony/config": "~2.3"
+    },
+    "require-dev": {
+        "matthiasnoback/symfony-dependency-injection-test": "~0.4",
+        "mockery/mockery": "~0.9"
+    },
+    "autoload": {
+        "psr-4": { "Zenstruck\\ObjectRoutingBundle\\": "" }
+    }
+}
