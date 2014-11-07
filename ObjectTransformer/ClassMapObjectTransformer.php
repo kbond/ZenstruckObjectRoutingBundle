@@ -24,24 +24,21 @@ class ClassMapObjectTransformer implements ObjectTransformer
     {
         $objectClass = get_class($object);
 
-        foreach ($this->classMap as $class => $config) {
-            if (!$this->isClassSupported($objectClass, $class)) {
-                continue;
-            }
-
-            $accessor = PropertyAccess::createPropertyAccessor();
-
-            $parameters = array_map(
-                function ($value) use ($object, $accessor) {
-                    return $accessor->getValue($object, $value);
-                },
-                $config['route_parameters']
-            );
-
-            return new RouteContext($config['route_name'], $parameters);
+        if (!isset($this->classMap[$objectClass])) {
+            throw new \InvalidArgumentException(sprintf('Could not transform class "%s"', $objectClass));
         }
 
-        throw new \InvalidArgumentException(sprintf('Could not transform class "%s"', $objectClass));
+        $config = $this->classMap[$objectClass];
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        $parameters = array_map(
+            function ($value) use ($object, $accessor) {
+                return $accessor->getValue($object, $value);
+            },
+            $config['route_parameters']
+        );
+
+        return new RouteContext($config['route_name'], $parameters);
     }
 
     /**
