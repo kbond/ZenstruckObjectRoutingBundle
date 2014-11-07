@@ -154,3 +154,26 @@ have a more complex scenario, you can add your own transformers. Simply have you
 `zenstruck_object_routing.object_transformer`.
 
 See `Zenstruck\ObjectRoutingBundle\ObjectTransformer\ClassMapObjectTransformer` for a reference.
+
+## Full Default Config
+
+```yaml
+zenstruck_object_routing:
+    class_map:
+
+        # Prototype
+        class:
+            route_name:           ~ # Required
+
+            # Route parameter as key, object method/public property as value
+            route_parameters:
+
+                # Prototype
+                route_parameter:      ~
+```
+
+**NOTE 1**: This bundle's router uses the `PropertyAccess` component to access the object's properties/methods.
+
+**NOTE 2**: When mapping multiple objects that inherit one another, be sure to order them from child to parent. For
+instance, if you had a `BlogPost` that has a parent class of `Page` and both are mapped, be sure to put `BlogPost`
+before `Page`.
