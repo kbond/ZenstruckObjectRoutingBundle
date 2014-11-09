@@ -2,6 +2,7 @@
 
 namespace Zenstruck\ObjectRoutingBundle\Routing;
 
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 use Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer;
@@ -9,7 +10,7 @@ use Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class ObjectRouter implements RouterInterface
+class ObjectRouter implements RouterInterface, WarmableInterface
 {
     private $router;
     private $transformers;
@@ -75,6 +76,16 @@ class ObjectRouter implements RouterInterface
     public function match($pathinfo)
     {
         return $this->router->match($pathinfo);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function warmUp($cacheDir)
+    {
+        if ($this->router instanceof WarmableInterface) {
+            $this->router->warmUp($cacheDir);
+        }
     }
 
     /**
