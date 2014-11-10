@@ -1,0 +1,29 @@
+services:
+    test.controller:
+        class: Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\TestController
+        arguments: [@router]
+
+    std_class_object_transformer:
+        class: Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\StdClassObjectTransformer
+        public: false
+        tags:
+            - { name: zenstruck_object_routing.object_transformer }
+
+zenstruck_object_routing:
+    class_map:
+        Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\Entity\BlogPost:
+            route_name: blog_post_show
+            route_parameters:
+                id: id
+                path: path
+        Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\Entity\Page:
+            route_name: page_show
+            route_parameters:
+                path: path
+
+framework:
+    secret:     xxxxxxxxxx
+    router:     { resource: "%kernel.root_dir%/routing.yml" }
+    test: ~
+    session:
+        storage_id: session.storage.mock_file

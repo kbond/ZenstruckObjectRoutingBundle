@@ -1,0 +1,12 @@
+test:
+    path:     /test/{type}
+    defaults: { _controller: test.controller:testAction }
+
+page_show:
+    path: /page/{path}
+
+blog_post_show:
+    path: /blog/{id}/{path}
+
+std_class_show:
+    path: /std-class/{foo}
