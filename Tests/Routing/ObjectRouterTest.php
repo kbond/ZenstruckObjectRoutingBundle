@@ -56,12 +56,13 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
 
     public function testFallback()
     {
-        $fallbackRouter = m::mock('Symfony\Component\Routing\RouterInterface');
+        $fallbackRouter = m::mock('Symfony\Component\Routing\RouterInterface', 'Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface');
         $fallbackRouter->shouldReceive('match')->once()->with('foo')->andReturn(array('match'));
         $fallbackRouter->shouldReceive('generate')->once()->with('foo', array('bar'), true)->andReturn('generate');
         $fallbackRouter->shouldReceive('getRouteCollection')->once()->andReturn(m::mock('Symfony\Component\Routing\RouteCollection'));
         $fallbackRouter->shouldReceive('getContext')->once()->andReturn(m::mock('Symfony\Component\Routing\RequestContext'));
         $fallbackRouter->shouldReceive('setContext')->once()->with(m::type('Symfony\Component\Routing\RequestContext'));
+        $fallbackRouter->shouldReceive('warmUp')->once()->with(m::type('string'));
 
         $router = new ObjectRouter($fallbackRouter);
 
@@ -71,6 +72,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Routing\RequestContext', $router->getContext());
 
         $router->setContext(m::mock('Symfony\Component\Routing\RequestContext'));
+        $router->warmUp('foo');
     }
 
     public function tearDown()
