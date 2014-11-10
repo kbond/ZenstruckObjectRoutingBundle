@@ -2,11 +2,25 @@ test:
     path:     /test/{type}
     defaults: { _controller: test.controller:testAction }
 
+test_route:
+    path:     /test/{type}/{route}
+    defaults: { _controller: test.controller:testAction }
+
+test_route_absolute:
+    path:     /test/{type}/{route}/{absolute}
+    defaults: { _controller: test.controller:testAction }
+
 page_show:
     path: /page/{path}
 
 blog_post_show:
     path: /blog/{id}/{path}
+
+blog_post_edit:
+    path: /blog/{id}/edit
+
+blog_post_delete:
+    path: /blog/{id}/delete
 
 std_class_show:
     path: /std-class/{foo}

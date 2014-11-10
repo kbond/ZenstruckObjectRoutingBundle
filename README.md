@@ -10,6 +10,9 @@ A Symfony Bundle that enables passing objects to your router. It works by decora
 `ObjectRouter` that transforms objects into a *route name* and *route parameters*. These are passed to the default
 router.
 
+For those that remember symfony 1, this bundle brings back functionality that was
+[available in that framework](http://symfony.com/legacy/doc/jobeet/1_4/en/05?orm=Propel#chapter_05_object_route_class).
+
 ## Installation
 
 1. Install with composer:
@@ -60,7 +63,7 @@ class BlogPost
 }
 ```
 
-Next, you must have a route for that object:
+Next, you must have some routes for that object:
 
 ```yaml
 # app/config/routing.yml
@@ -68,6 +71,15 @@ Next, you must have a route for that object:
 blog_post_show:
     pattern:  /blog/{id}-{slug}
     defaults: { _controller: AcmeBundle:BlogPost:show }
+
+blog_post_edit:
+    pattern:  /blog/{id}/edit
+    defaults: { _controller: AcmeBundle:BlogPost:delete }
+
+blog_post_delete:
+    pattern:  /blog/{id}
+    defaults: { _controller: AcmeBundle:BlogPost:delete }
+    methods:  [DELETE]
 ```
 
 ### Without this bundle
@@ -77,9 +89,12 @@ Now, suppose you want to generate a route for a blog post. The *standard* way of
 **Twig**:
 
 ```html+jinja
-{# variable "post" is an instance of "BlogPost" #}
+{# variable "post" is an instance of "BlogPost" with id=1, slug=example #}
 
-<a href="{{ path('blog_post_show', { id: post.id, slug: post.slug }) }}">Post</a>
+{{ path('blog_post_show', { id: post.id, slug: post.slug }) }} {# /blog/1-example #}
+{{ path('blog_post_show', { id: post.id, slug: post.slug, view: full }, true) }} {# http://example.com/blog/1-example?view=full #}
+{{ path('blog_post_edit', { id: post.id }) }} {# /blog/1/edit #}
+{{ path('blog_post_delete', { id: post.id }) }} {# /blog/1 #}
 ```
 
 **Symfony Controller**:
@@ -93,18 +108,30 @@ class MyController extends Controller
 {
     public function myAction()
     {
-        $post = // get instance of Acme\Entity\BlogPost
+        $post = // instance of Acme\Entity\BlogPost with id=1, path=example
 
-        return $this->redirect(
-            $this->generateUrl('blog_post_show', ['id' => $post->getId(), 'slug' => $post->getSlug()])
+        // blog_post_show (/blog/1-example)
+        $url = $this->generateUrl('blog_post_show', ['id' => $post->getId(), 'slug' => $post->getSlug()]);
+
+        // blog_post_show with extra parameter and absolute (http://example.com/blog/1-example?view=full)
+        $url = $this->generateUrl(
+            'blog_post_show',
+            ['id' => $post->getId(), 'slug' => $post->getSlug(), 'view' => 'full'],
+            true
         );
+
+        // blog_post_edit (/blog/1/edit)
+        $url = $this->generateUrl('blog_post_edit', ['id' => $post->getId()]);
+
+        // blog_post_delete (/blog/1)
+        $url = $this->generateUrl('blog_post_delete', ['id' => $post->getId()]);
     }
 }
 ```
 
 ### With this bundle
 
-In this bundle's config, setup a mapping of `BlogPost` to the `blog_post_show` route:
+In this bundle's config, setup a mapping of `BlogPost` to the blog post routes:
 
 ```yaml
 # app/config/config.yml
@@ -112,10 +139,12 @@ In this bundle's config, setup a mapping of `BlogPost` to the `blog_post_show` r
 zenstruck_object_routing:
     class_map:
         Acme\Entity\BlogPost:
-            route_name: blog_post_show
-            route_parameters:
-                id: getId
-                slug: getSlug
+            default_route: blog_post_show
+            default_parameters: [id]
+            routes:
+                blog_post_show: [id, path]
+                blog_post_edit: ~
+                blog_post_delete: ~
 ```
 
 Generating routes for a blog post is now much simpler:
@@ -123,9 +152,14 @@ Generating routes for a blog post is now much simpler:
 **Twig**:
 
 ```html+jinja
-{# variable "post" is an instance of "BlogPost" #}
+{# variable "post" is an instance of "BlogPost" with id=1, slug=example #}
 
-<a href="{{ path(post) }}">Post</a>
+{{ path(post) }} {# /blog/1-example (blog_post_show url because it is the default route) #}
+{{ path('blog_post_show', post) }} {# equivalent to above #}
+{{ path(post, { view: full }, true) }} {# http://example.com/blog/1-example?view=full #}
+{{ path('blog_post_show', post, { view: full }, true) }} {# equivalent to above #}
+{{ path('blog_post_edit', post) }} {# /blog/1/edit #}
+{{ path('blog_post_delete', post) }} {# /blog/1 #}
 ```
 
 **Symfony Controller**:
@@ -139,17 +173,29 @@ class MyController extends Controller
 {
     public function myAction()
     {
-        $post = // get instance of Acme\Entity\BlogPost
+        $post = // instance of Acme\Entity\BlogPost with id=1, slug=example
 
-        return $this->redirect($this->generateUrl($post));
+        // blog_post_show (/blog/1-example)
+        $url = $this->generateUrl($post); // blog_post_show url because it is the default route
+        $url = $this->generateUrl('blog_post_show', $post); // equivalent to above
+
+        // blog_post_show with extra parameter and absolute (http://example.com/blog/1-example?view=full)
+        $url = $this->generateUrl($post, ['view' => 'full'], true);
+        $url = $this->generateUrl('blog_post_show', $post, ['view' => 'full'], true); // equivalent to above
+
+        // blog_post_edit (/blog/1/edit)
+        $url = $this->generateUrl('blog_post_edit', $post);
+
+        // blog_post_delete (/blog/1)
+        $url = $this->generateUrl('blog_post_delete', $post);
     }
 }
 ```
 
 ## Custom Transformations
 
-This bundle comes with a `ClassMapTransformer` that uses the bundle's config to map object classes to routes. If you
-have a more complex scenario, you can add your own transformers. Simply have your custom transformer implement
+This bundle comes with a `ClassMapObjectTransformer` that uses the bundle's config to map object classes to routes. If
+you have a more complex scenario, you can add your own transformers. Simply have your custom transformer implement
 `Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer` and register it as a service tagged with
 `zenstruck_object_routing.object_transformer`.
 
@@ -163,13 +209,27 @@ zenstruck_object_routing:
 
         # Prototype
         class:
-            route_name:           ~ # Required
 
-            # Route parameter as key, object method/public property as value
-            route_parameters:
+            # Optional - The route to use when an object is passed as the 1st parameter of Router::generate()
+            default_route:        null
+
+            # Route parameter as key, object method/public property as value (can omit key if object method/property is the same)
+            default_parameters:
+
+                # Examples:
+                - id
+                - path
+
+            # Route name as key, parameter array as value (can leave parameter array as null if same as default_parameters)
+            routes:
+
+                # Examples:
+                blog_show:           ~
+                blog_edit:
+                    - id
 
                 # Prototype
-                route_parameter:      ~
+                route_name:           []
 ```
 
 **NOTE 1**: This bundle's router uses the `PropertyAccess` component to access the object's properties/methods.

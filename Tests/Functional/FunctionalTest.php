@@ -30,6 +30,10 @@ class FunctionalTest extends WebTestCase
             array('/test/blog-post', '/blog/foo/bar'),
             array('/test/std-class', '/std-class/bar'),
             array('/test/default', '/page/baz'),
+            array('/test/blog-post/blog_post_edit', '/blog/foo/edit'),
+            array('/test/blog-post/blog_post_delete', '/blog/foo/delete'),
+            array('/test/blog-post/blog_post_edit?foo=bar', '/blog/foo/edit?foo=bar'),
+            array('/test/blog-post/blog_post_edit/absolute', 'http://localhost/blog/foo/edit'),
         );
     }
 }

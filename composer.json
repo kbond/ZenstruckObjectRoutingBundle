@@ -1,6 +1,6 @@
 {
     "name": "zenstruck/object-routing-bundle",
-    "description": "Symfony2 Bundle that allows generating urls from objects.",
+    "description": "Symfony2 Bundle that allows generating urls from objects (sf1 style).",
     "keywords": ["routing", "symfony2", "bundle"],
     "homepage": "http://zenstruck.com/projects/ZenstruckObjectRoutingBundle",
     "type": "symfony-bundle",
