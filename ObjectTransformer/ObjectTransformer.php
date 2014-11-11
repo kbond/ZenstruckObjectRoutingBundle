@@ -10,16 +10,18 @@ namespace Zenstruck\ObjectRoutingBundle\ObjectTransformer;
 interface ObjectTransformer
 {
     /**
-     * @param object $object
+     * @param object      $object
+     * @param null|string $routeName
      *
      * @return \Zenstruck\ObjectRoutingBundle\RouteContext
      */
-    public function transform($object);
+    public function transform($object, $routeName = null);
 
     /**
-     * @param object $object
+     * @param object      $object
+     * @param null|string $routeName
      *
      * @return bool
      */
-    public function supports($object);
+    public function supports($object, $routeName = null);
 }

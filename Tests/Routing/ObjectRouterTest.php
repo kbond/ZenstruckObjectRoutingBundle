@@ -11,7 +11,7 @@ use Zenstruck\ObjectRoutingBundle\Routing\ObjectRouter;
  */
 class ObjectRouterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGenerateObject()
+    public function testGenerateNameObject()
     {
         $fallbackRouter = m::mock('Symfony\Component\Routing\RouterInterface');
         $fallbackRouter
@@ -22,14 +22,14 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         ;
 
         $transformer1 = m::mock('Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer');
-        $transformer1->shouldReceive('supports')->once()->with(m::type('\stdClass'))->andReturn(false);
+        $transformer1->shouldReceive('supports')->once()->with(m::type('\stdClass'), null)->andReturn(false);
 
         $transformer2 = m::mock('Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer');
-        $transformer2->shouldReceive('supports')->once()->with(m::type('\stdClass'))->andReturn(true);
+        $transformer2->shouldReceive('supports')->once()->with(m::type('\stdClass'), null)->andReturn(true);
         $transformer2
             ->shouldReceive('transform')
             ->once()
-            ->with(m::type('\stdClass'))
+            ->with(m::type('\stdClass'), null)
             ->andReturn(new RouteContext('foo', array('bar' => 'baz')))
         ;
 
@@ -37,6 +37,78 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $router->addTransformer($transformer2);
 
         $this->assertSame('generate', $router->generate(new \stdClass(), array('foo' => 'bar')));
+    }
+
+    public function testGenerateParametersObject()
+    {
+        $fallbackRouter = m::mock('Symfony\Component\Routing\RouterInterface');
+        $fallbackRouter
+            ->shouldReceive('generate')
+            ->once()
+            ->with('foo_route', array('bar' => 'baz'), false)
+            ->andReturn('generate')
+        ;
+
+        $transformer = m::mock('Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer');
+        $transformer->shouldReceive('supports')->once()->with(m::type('\stdClass'), 'foo_route')->andReturn(true);
+        $transformer
+            ->shouldReceive('transform')
+            ->once()
+            ->with(m::type('\stdClass'), 'foo_route')
+            ->andReturn(new RouteContext('foo_route', array('bar' => 'baz')))
+        ;
+
+        $router = new ObjectRouter($fallbackRouter, array($transformer));
+
+        $this->assertSame('generate', $router->generate('foo_route', new \stdClass()));
+    }
+
+    public function testGenerateParametersObjectWithExtraParameters()
+    {
+        $fallbackRouter = m::mock('Symfony\Component\Routing\RouterInterface');
+        $fallbackRouter
+            ->shouldReceive('generate')
+            ->once()
+            ->with('foo_route', array('bar' => 'baz', 'foo' => 'bar'), false)
+            ->andReturn('generate')
+        ;
+
+        $transformer = m::mock('Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer');
+        $transformer->shouldReceive('supports')->once()->with(m::type('\stdClass'), 'foo_route')->andReturn(true);
+        $transformer
+            ->shouldReceive('transform')
+            ->once()
+            ->with(m::type('\stdClass'), 'foo_route')
+            ->andReturn(new RouteContext('foo_route', array('bar' => 'baz')))
+        ;
+
+        $router = new ObjectRouter($fallbackRouter, array($transformer));
+
+        $this->assertSame('generate', $router->generate('foo_route', new \stdClass(), array('foo' => 'bar')));
+    }
+
+    public function testGenerateParametersObjectWithExtraParametersAndReferenceType()
+    {
+        $fallbackRouter = m::mock('Symfony\Component\Routing\RouterInterface');
+        $fallbackRouter
+            ->shouldReceive('generate')
+            ->once()
+            ->with('foo_route', array('bar' => 'baz', 'foo' => 'bar'), true)
+            ->andReturn('generate')
+        ;
+
+        $transformer = m::mock('Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer');
+        $transformer->shouldReceive('supports')->once()->with(m::type('\stdClass'), 'foo_route')->andReturn(true);
+        $transformer
+            ->shouldReceive('transform')
+            ->once()
+            ->with(m::type('\stdClass'), 'foo_route')
+            ->andReturn(new RouteContext('foo_route', array('bar' => 'baz')))
+        ;
+
+        $router = new ObjectRouter($fallbackRouter, array($transformer));
+
+        $this->assertSame('generate', $router->generate('foo_route', new \stdClass(), array('foo' => 'bar'), true));
     }
 
     public function testGenerateObjectNoTransformers()

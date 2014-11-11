@@ -24,8 +24,8 @@ class ZenstruckObjectRoutingExtensionTest extends AbstractExtensionTestCase
         $this->load(array(
                 'class_map' => array(
                     'stdClass' => array(
-                        'route_name' => 'foo',
-                        'route_parameters' => array()
+                        'default_route' => 'foo',
+                        'default_parameters' => array()
                     )
                 )
             ));

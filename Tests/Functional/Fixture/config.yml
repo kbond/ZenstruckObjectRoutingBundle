@@ -12,14 +12,15 @@ services:
 zenstruck_object_routing:
     class_map:
         Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\Entity\BlogPost:
-            route_name: blog_post_show
-            route_parameters:
-                id: id
-                path: path
+            default_route: blog_post_show
+            default_parameters: [id]
+            routes:
+                blog_post_show: [id, path]
+                blog_post_edit: ~
+                blog_post_delete: ~
         Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\Entity\Page:
-            route_name: page_show
-            route_parameters:
-                path: path
+            default_route: page_show
+            default_parameters: [path]
 
 framework:
     secret:     xxxxxxxxxx

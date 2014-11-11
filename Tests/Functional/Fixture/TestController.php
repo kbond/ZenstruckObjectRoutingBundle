@@ -20,7 +20,7 @@ class TestController
         $this->router = $router;
     }
 
-    public function testAction($type, Request $request)
+    public function testAction(Request $request, $type, $route = null, $absolute = null)
     {
         switch ($type) {
             case 'page':
@@ -34,6 +34,14 @@ class TestController
                 break;
             default:
                 return $this->createResponse('page_show', array('path' => 'baz'));
+        }
+
+        if ($route && $absolute) {
+            return $this->createResponse($route, $name, $request->query->all(), true);
+        }
+
+        if ($route) {
+            return $this->createResponse($route, $name, $request->query->all());
         }
 
         return $this->createResponse($name, $request->query->all());

@@ -62,7 +62,27 @@ class ObjectRouter implements RouterInterface, WarmableInterface
      */
     public function generate($name, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
     {
-        if (is_object($name) && ($routeContext = $this->transform($name))) {
+        $routeName = is_object($name) ? null : $name;
+        $object = $this->getObject($name, $parameters);
+
+        // ensure parameters is array
+        if (is_object($parameters)) {
+            $parameters = array();
+        }
+
+        // allow 3rd arg to be extra parameters array
+        if (is_array($referenceType)) {
+            $parameters = $referenceType;
+            $referenceType = self::ABSOLUTE_PATH;
+        }
+
+        // check for reference type as 4th arg
+        if (3 < count($args = func_get_args())) {
+            $referenceType = $args[3];
+        }
+
+        // check if first argument is an object
+        if ($object && ($routeContext = $this->transform($object, $routeName))) {
             $name = $routeContext->getName();
             $parameters = array_merge($routeContext->getParameters(), $parameters);
         }
@@ -89,18 +109,38 @@ class ObjectRouter implements RouterInterface, WarmableInterface
     }
 
     /**
-     * @param object $object
+     * @param object      $object
+     * @param null|string $routeName
      *
      * @return null|\Zenstruck\ObjectRoutingBundle\RouteContext
      */
-    private function transform($object)
+    private function transform($object, $routeName = null)
     {
         foreach ($this->transformers as $transformer) {
-            if (!$transformer->supports($object)) {
+            if (!$transformer->supports($object, $routeName)) {
                 continue;
             }
 
-            return $transformer->transform($object);
+            return $transformer->transform($object, $routeName);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param object|string $name
+     * @param array|object  $parameters
+     *
+     * @return null|object
+     */
+    private function getObject($name, $parameters)
+    {
+        if (is_object($name)) {
+            return $name;
+        }
+
+        if (is_object($parameters)) {
+            return $parameters;
         }
 
         return null;
