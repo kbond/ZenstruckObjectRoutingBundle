@@ -51,75 +51,75 @@ class ClassMapObjectTransformerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array(
                         'default_route' => 'foo',
-                        'default_parameters' => array('foo', 'baz')
-                    )
+                        'default_parameters' => array('foo', 'baz'),
+                    ),
                 ),
                 new FixtureA(),
                 null,
                 'foo',
-                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue')
+                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue'),
             ),
             array(
                 array(
                     'Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureB' => '',
                     'Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array(
                         'default_route' => 'foo',
-                        'default_parameters' => array('foo' => 'foo', 'baz' => 'baz')
-                    )
+                        'default_parameters' => array('foo' => 'foo', 'baz' => 'baz'),
+                    ),
                 ),
                 new FixtureA(),
                 null,
                 'foo',
-                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue')
+                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue'),
             ),
             array(
                 array(
                     'Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array(
                         'default_route' => 'foo',
-                        'default_parameters' => array('foo', 'baz')
-                    )
+                        'default_parameters' => array('foo', 'baz'),
+                    ),
                 ),
                 new FixtureA(),
                 'foo',
                 'foo',
-                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue')
+                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue'),
             ),
             array(
                 array(
                     'Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array(
                         'default_route' => 'foo',
-                        'routes' => array('foo' => array('foo', 'baz'))
-                    )
+                        'routes' => array('foo' => array('foo', 'baz')),
+                    ),
                 ),
                 new FixtureA(),
                 null,
                 'foo',
-                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue')
+                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue'),
             ),
             array(
                 array(
                     'Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array(
                         'default_route' => null,
-                        'routes' => array('foo' => array('foo', 'baz'))
-                    )
+                        'routes' => array('foo' => array('foo', 'baz')),
+                    ),
                 ),
                 new FixtureA(),
                 'foo',
                 'foo',
-                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue')
+                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue'),
             ),
             array(
                 array(
                     'Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array(
                         'default_route' => null,
                         'default_parameters' => array('foo', 'baz'),
-                        'routes' => array('foo' => array())
-                    )
+                        'routes' => array('foo' => array()),
+                    ),
                 ),
                 new FixtureA(),
                 'foo',
                 'foo',
-                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue')
+                array('foo' => 'fooPropertyValue', 'baz' => 'bazMethodValue'),
             ),
         );
     }
@@ -131,61 +131,61 @@ class ClassMapObjectTransformerTest extends \PHPUnit_Framework_TestCase
                 array(),
                 new \stdClass(),
                 'foo',
-                false
+                false,
             ),
             array(
                 array('stdClass' => array('default_route' => 'foo')),
                 new \stdClass(),
                 null,
-                true
+                true,
             ),
             array(
                 array('stdClass' => array('default_route' => 'foo')),
                 new \stdClass(),
                 'foo',
-                true
+                true,
             ),
             array(
                 array('stdClass' => array('default_route' => 'bar')),
                 new \stdClass(),
                 'foo',
-                false
+                false,
             ),
             array(
                 array('stdClass' => array('default_route' => 'bar', 'routes' => array('foo' => '...'))),
                 new \stdClass(),
                 'foo',
-                true
+                true,
             ),
             array(
                 array(),
                 new FixtureA(),
                 null,
-                false
+                false,
             ),
             array(
                 array('Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array('default_route' => 'foo')),
                 new FixtureA(),
                 'foo',
-                true
+                true,
             ),
             array(
                 array('Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => array('default_route' => 'foo')),
                 new FixtureB(),
                 null,
-                true
+                true,
             ),
             array(
                 array('Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureA' => '...'),
                 new \stdClass(),
                 null,
-                false
+                false,
             ),
             array(
                 array('Zenstruck\ObjectRoutingBundle\Tests\ObjectTransformer\FixtureB' => '...'),
                 new FixtureA(),
                 'foo',
-                false
+                false,
             ),
         );
     }
@@ -201,4 +201,6 @@ class FixtureA
     }
 }
 
-class FixtureB extends FixtureA {}
+class FixtureB extends FixtureA
+{
+}

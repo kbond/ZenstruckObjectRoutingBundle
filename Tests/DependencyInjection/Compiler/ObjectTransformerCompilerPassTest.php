@@ -27,7 +27,7 @@ class ObjectTransformerCompilerPassTest extends AbstractCompilerPassTestCase
             'zenstruck_object_routing.router',
             'addTransformer',
             array(
-                new Reference('my_transformer')
+                new Reference('my_transformer'),
             )
         );
     }

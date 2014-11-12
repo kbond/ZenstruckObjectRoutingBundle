@@ -17,7 +17,7 @@ class TestKernel extends Kernel
     {
         return array(
             new FrameworkBundle(),
-            new ZenstruckObjectRoutingBundle()
+            new ZenstruckObjectRoutingBundle(),
         );
     }
 

@@ -7,5 +7,4 @@ namespace Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\Entity;
  */
 class BlogPost extends Page
 {
-
 }
