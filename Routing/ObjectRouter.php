@@ -85,6 +85,13 @@ class ObjectRouter implements RouterInterface, WarmableInterface
         if ($object && ($routeContext = $this->transform($object, $routeName))) {
             $name = $routeContext->getName();
             $parameters = array_merge($routeContext->getParameters(), $parameters);
+            $uri = $this->router->generate($name, $parameters, $referenceType);
+
+            if ($fragment = $routeContext->getFragment()) {
+                $uri .= '#'.$fragment;
+            }
+
+            return $uri;
         }
 
         return $this->router->generate($name, $parameters, $referenceType);

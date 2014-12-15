@@ -147,6 +147,30 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $router->warmUp('foo');
     }
 
+    public function testGenerateWithFragment()
+    {
+        $fallbackRouter = m::mock('Symfony\Component\Routing\RouterInterface');
+        $fallbackRouter
+            ->shouldReceive('generate')
+            ->once()
+            ->with('foo', array('bar' => 'baz', 'foo' => 'bar'), false)
+            ->andReturn('generate')
+        ;
+
+        $transformer = m::mock('Zenstruck\ObjectRoutingBundle\ObjectTransformer\ObjectTransformer');
+        $transformer->shouldReceive('supports')->once()->with(m::type('\stdClass'), null)->andReturn(true);
+        $transformer
+            ->shouldReceive('transform')
+            ->once()
+            ->with(m::type('\stdClass'), null)
+            ->andReturn(new RouteContext('foo', array('bar' => 'baz'), 'bar'))
+        ;
+
+        $router = new ObjectRouter($fallbackRouter, array($transformer));
+
+        $this->assertSame('generate#bar', $router->generate(new \stdClass(), array('foo' => 'bar')));
+    }
+
     public function tearDown()
     {
         m::close();
