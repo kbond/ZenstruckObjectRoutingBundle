@@ -4,6 +4,7 @@
 [![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/kbond/ZenstruckObjectRoutingBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/kbond/ZenstruckObjectRoutingBundle/)
 [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/kbond/ZenstruckObjectRoutingBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/kbond/ZenstruckObjectRoutingBundle/)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/26a294aa-2a1a-4dea-a1d7-24b8a3222602.svg?style=flat-square)](https://insight.sensiolabs.com/projects/26a294aa-2a1a-4dea-a1d7-24b8a3222602)
+[![StyleCI](https://styleci.io/repos/26290412/shield)](https://styleci.io/repos/26290412)
 [![Latest Stable Version](http://img.shields.io/packagist/v/zenstruck/object-routing-bundle.svg?style=flat-square)](https://packagist.org/packages/zenstruck/object-routing-bundle)
 [![License](http://img.shields.io/packagist/l/zenstruck/object-routing-bundle.svg?style=flat-square)](https://packagist.org/packages/zenstruck/object-routing-bundle)
 

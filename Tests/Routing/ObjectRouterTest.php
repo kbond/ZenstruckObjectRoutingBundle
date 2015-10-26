@@ -2,7 +2,7 @@
 
 namespace Zenstruck\ObjectRoutingBundle\Tests\Routing;
 
-use \Mockery as m;
+use Mockery as m;
 use Zenstruck\ObjectRoutingBundle\RouteContext;
 use Zenstruck\ObjectRoutingBundle\Routing\ObjectRouter;
 
