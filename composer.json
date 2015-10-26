@@ -12,17 +12,17 @@
         }
     ],
     "require": {
-        "symfony/http-kernel": "~2.3",
-        "symfony/routing": "~2.3",
-        "symfony/property-access": "~2.3",
-        "symfony/dependency-injection": "~2.3",
-        "symfony/config": "~2.3"
+        "symfony/http-kernel": "~2.3|~3.0",
+        "symfony/routing": "~2.3|~3.0",
+        "symfony/property-access": "~2.3|~3.0",
+        "symfony/dependency-injection": "~2.3|~3.0",
+        "symfony/config": "~2.3|~3.0"
     },
     "require-dev": {
-        "symfony/framework-bundle": "~2.3",
-        "symfony/browser-kit": "~2.3",
-        "symfony/finder": "~2.3",
-        "matthiasnoback/symfony-dependency-injection-test": "~0.4",
+        "symfony/framework-bundle": "~2.3|~3.0",
+        "symfony/browser-kit": "~2.3|~3.0",
+        "symfony/finder": "~2.3|~3.0",
+        "matthiasnoback/symfony-dependency-injection-test": "^0.7.4",
         "mockery/mockery": "~0.9"
     },
     "autoload": {
