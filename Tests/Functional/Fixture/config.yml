@@ -1,7 +1,7 @@
 services:
     test.controller:
         class: Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\TestController
-        arguments: [@router]
+        arguments: ["@router"]
 
     std_class_object_transformer:
         class: Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\StdClassObjectTransformer
