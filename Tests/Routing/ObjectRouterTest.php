@@ -3,6 +3,7 @@
 namespace Zenstruck\ObjectRoutingBundle\Tests\Routing;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zenstruck\ObjectRoutingBundle\RouteContext;
 use Zenstruck\ObjectRoutingBundle\Routing\ObjectRouter;
 
@@ -17,7 +18,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $fallbackRouter
             ->shouldReceive('generate')
             ->once()
-            ->with('foo', array('bar' => 'baz', 'foo' => 'bar'), false)
+            ->with('foo', array('bar' => 'baz', 'foo' => 'bar'), UrlGeneratorInterface::ABSOLUTE_PATH)
             ->andReturn('generate')
         ;
 
@@ -45,7 +46,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $fallbackRouter
             ->shouldReceive('generate')
             ->once()
-            ->with('foo_route', array('bar' => 'baz'), false)
+            ->with('foo_route', array('bar' => 'baz'), UrlGeneratorInterface::ABSOLUTE_PATH)
             ->andReturn('generate')
         ;
 
@@ -69,7 +70,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $fallbackRouter
             ->shouldReceive('generate')
             ->once()
-            ->with('foo_route', array('bar' => 'baz', 'foo' => 'bar'), false)
+            ->with('foo_route', array('bar' => 'baz', 'foo' => 'bar'), UrlGeneratorInterface::ABSOLUTE_PATH)
             ->andReturn('generate')
         ;
 
@@ -93,7 +94,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $fallbackRouter
             ->shouldReceive('generate')
             ->once()
-            ->with('foo_route', array('bar' => 'baz', 'foo' => 'bar'), true)
+            ->with('foo_route', array('bar' => 'baz', 'foo' => 'bar'), UrlGeneratorInterface::ABSOLUTE_URL)
             ->andReturn('generate')
         ;
 
@@ -108,7 +109,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
 
         $router = new ObjectRouter($fallbackRouter, array($transformer));
 
-        $this->assertSame('generate', $router->generate('foo_route', new \stdClass(), array('foo' => 'bar'), true));
+        $this->assertSame('generate', $router->generate('foo_route', new \stdClass(), array('foo' => 'bar'), UrlGeneratorInterface::ABSOLUTE_URL));
     }
 
     public function testGenerateObjectNoTransformers()
@@ -117,7 +118,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $fallbackRouter
             ->shouldReceive('generate')
             ->once()
-            ->with(m::type('\stdClass'), array(), false)
+            ->with(m::type('\stdClass'), array(), UrlGeneratorInterface::ABSOLUTE_PATH)
             ->andReturn('generate')
         ;
 
@@ -153,7 +154,7 @@ class ObjectRouterTest extends \PHPUnit_Framework_TestCase
         $fallbackRouter
             ->shouldReceive('generate')
             ->once()
-            ->with('foo', array('bar' => 'baz', 'foo' => 'bar'), false)
+            ->with('foo', array('bar' => 'baz', 'foo' => 'bar'), UrlGeneratorInterface::ABSOLUTE_PATH)
             ->andReturn('generate')
         ;
 

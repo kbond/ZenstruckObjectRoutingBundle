@@ -4,6 +4,7 @@ namespace Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\Entity\BlogPost;
 use Zenstruck\ObjectRoutingBundle\Tests\Functional\Fixture\Entity\Page;
@@ -37,7 +38,7 @@ class TestController
         }
 
         if ($route && $absolute) {
-            return $this->createResponse($route, $name, $request->query->all(), true);
+            return $this->createResponse($route, $name, $request->query->all(), UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         if ($route) {
