@@ -16,7 +16,7 @@ final class RouteContext
      * @param array       $parameters Parameters for the route
      * @param string|null $fragment   Fragment ("#hash") to add to the generated uri
      */
-    public function __construct($name, array $parameters, $fragment = null)
+    public function __construct($name, array $parameters = array(), $fragment = null)
     {
         $this->name = $name;
         $this->parameters = $parameters;
